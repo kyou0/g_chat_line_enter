@@ -1,17 +1,37 @@
+// 投稿キー設定: 何キー + Enter の同時押しで投稿するか
+// shiftKey | ctrlKey | altKey
+const POST_KEY = "shiftKey";
+
+window.addEventListener("keydown", handler, true);
+
 function handler(event) {
-  // Enterキーが押されたかどうかをチェック
   if (event.key !== "Enter") {
+    // Enterキー以外は何もしない
     return;
   }
-  
-  // WindowsではShift + Enter、MacではCmd + Enter (metaKey) をチェック
-  const isWindows = navigator.platform.indexOf('Win') > -1;
-  const POST_KEY = isWindows ? "shiftKey" : "metaKey"; // ここでPOST_KEYを定義
-
-  // 修正キーが押されていない場合は、何もしない
-  if (!event[POST_KEY]) {
+  if (event.isModified) {
+    // 無限ループ防止
     return;
   }
 
-  // 以下、コードの残りの部分...
+  if (event[POST_KEY]) {
+    // 投稿キー + Enter の場合
+    // Enter 単体イベントを発火させて投稿を実行
+    const properties = [];
+    for (const key in event) {
+      properties[key] = event[key];
+    }
+    properties.shiftKey = false;
+    const modifiedEvent = new KeyboardEvent("keydown", properties);
+    modifiedEvent.isModified = true;
+    event.target.dispatchEvent(modifiedEvent);
+  } else {
+    // Enter 単体の場合
+    // 改行実行
+    document.execCommand("insertLineBreak");
+  }
+
+  // デフォルトの動作を抑止
+  event.preventDefault();
+  event.stopImmediatePropagation();
 }
