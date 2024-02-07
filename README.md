@@ -1,0 +1,2 @@
+# g_chat_line_enter
+Mac版にてGoogle chatのエンターキーを送信から変更する
