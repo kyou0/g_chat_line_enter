@@ -1,0 +1,13 @@
+{
+  "name": "Mac版 Google Chat 改行キーカスタム",
+  "description": "Enterで改行、Shift or Ctrl or Alt + Enterで投稿。■確認環境 ブラウザ:Arc 端末:Mac",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["*://chat.google.com/*"],
+      "js": ["custom_line_break.js"],
+      "all_frames": true
+    }
+  ]
+}
